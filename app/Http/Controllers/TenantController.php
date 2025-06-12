@@ -38,24 +38,13 @@ class TenantController extends Controller
             'id' => ['required', 'string', 'max:255', 'unique:tenants,id'],
         ]);
 
-        // Create a new tenant
-        DB::transaction(function () use ($request) {
-            $tenant = Tenant::create($request->only('id'));
-            $tenant->domains()->create([
-                'domain' => $request->input('id') . '.localhost',
-            ]);
-        });
+        $tenant = Tenant::create($request->only('id'));
+        $tenant->domains()->create([
+            'domain' => $request->input('id') . '.localhost',
+        ]);
 
         // Redirect to the tenants index with a success message
         return redirect()->route('tenants.index')->with('success', 'Tenant created successfully.');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Tenant $tenant)
-    {
-        //
     }
 
     /**
@@ -63,7 +52,7 @@ class TenantController extends Controller
      */
     public function edit(Tenant $tenant)
     {
-        //
+        return view('tenants.edit', compact('tenant'));
     }
 
     /**
@@ -71,7 +60,18 @@ class TenantController extends Controller
      */
     public function update(Request $request, Tenant $tenant)
     {
-        //
+        // Validate the request data
+        $request->validate([
+            'id' => ['required', 'string', 'max:255', 'unique:tenants,id,' . $tenant->id],
+        ]);
+
+        $tenant->update($request->only('id'));
+        $tenant->domains()->update([
+            'domain' => $request->input('id') . '.localhost',
+        ]);
+
+        // Redirect to the tenants index with a success message
+        return redirect()->route('tenants.index')->with('success', 'Tenant updated successfully.');
     }
 
     /**
@@ -79,6 +79,11 @@ class TenantController extends Controller
      */
     public function destroy(Tenant $tenant)
     {
-        //
+        // Delete the tenant and its associated domains
+        $tenant->domains()->delete();
+        $tenant->delete();
+
+        // Redirect to the tenants index with a success message
+        return redirect()->route('tenants.index')->with('success', 'Tenant deleted successfully.');
     }
 }

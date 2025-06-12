@@ -23,7 +23,7 @@
                                 <tr>
                                     <td class="border px-4 py-2">{{ $tenant->id }}</td>
                                     <td class="border px-4 py-2">{{ $tenant->domains->pluck('domain')->join(', ') }}</td>
-                                    <td class="border px-4 py-2">
+                                    <td class="border px-4 py-2 flex justify-center gap-6">
                                         <a href="{{ route('tenants.edit', $tenant) }}"
                                             class="text-yellow-500 hover:underline">Edit</a>
                                         |
