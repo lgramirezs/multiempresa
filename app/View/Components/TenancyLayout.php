@@ -21,6 +21,6 @@ class TenancyLayout extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('layouts.tenancy-layout');
+        return view('layouts.tenancy');
     }
 }
