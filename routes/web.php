@@ -2,8 +2,9 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TenantController;
+use App\Http\Controllers\TenantRegistersController;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Storage;
 
 foreach (config('tenancy.central_domains') as $domain) {
     Route::domain($domain)->group(function () {
@@ -22,6 +23,13 @@ foreach (config('tenancy.central_domains') as $domain) {
         });
 
         Route::resource('tenants', TenantController::class)->except(['show']);
+
+        Route::get('/tenants-registers/{tenant}', [TenantRegistersController::class, 'index'])->name('tenants-registers.index');
+
+        // Route::get('/file/{path}', function ($path) {
+        //     return response()->file(Storage::path($path));
+        // })->where('path', '.*') // Permite cualquier ruta después de /file/
+        //     ->name('file');
 
         require __DIR__ . '/auth.php';
     });
