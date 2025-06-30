@@ -2,11 +2,11 @@
 
 | ID     | Nombre del Requerimiento              | Descripción                                                                                                                                      | Módulo            | Prioridad | Dependencias     |
 |--------|----------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|-----------|------------------|
-| RF-01  | Gestión de Empresas (Tenants)         | Permitir crear, editar, eliminar y listar empresas dentro del sistema, cada una con su configuración independiente.                             | Administración    | Alta      | Ninguna          |
+| RF-01  | Gestión de Empresas (Tenants)         | Permitir crear, editar, eliminar y listar empresas dentro del sistema, cada una con su configuración independiente.                             | Aplicación Base    | Alta      | Ninguna          |
 | RF-02  | Aislamiento de Datos por Empresa      | Garantizar que cada empresa visualice solo su propia información en todos los módulos.                                                          | Todos             | Alta      | RF-01            |
-| RF-03  | Switch de Empresa Activa              | Permitir que usuarios con acceso a múltiples empresas puedan cambiar de empresa activa desde la interfaz.                                       | UI General        | Alta      | RF-01, RF-02     |
-| RF-04  | Registro de Usuarios Multitenant      | Permitir registrar usuarios con acceso restringido a una o varias empresas, según sus permisos.                                                 | Seguridad         | Alta      | RF-01            |
-| RF-05  | Control de Roles y Permisos por Empresa | Gestionar roles y permisos para cada empresa de forma independiente.                                                                            | Seguridad         | Alta      | RF-04            |
+| RF-03  | Switch de Empresa Activa              | Permitir que un usuario con acceso a múltiples empresas desde la aplicación base pueda cambiar de empresa activa desde la interfaz.                                       | Aplicación Base       | Alta      | RF-01, RF-02     |
+| RF-04  | Registro de Usuarios Multitenant      | Permitir asignación automática de permisos del administrador de la instancia central a las nuevas empresas creadas.                                                 | Aplicación Base         | Alta      | RF-01            |
+| RF-05  | Control de Roles y Permisos por Empresa | Gestionar roles y permisos para cada empresa de forma independiente.                                                       | Aplicación Base         | Alta      | RF-04            |
 
 
 
@@ -14,7 +14,7 @@
 
 | ID     | Nombre del Requerimiento              | Descripción                                                                                                                                      | Módulo            | Prioridad | Dependencias     |
 |--------|----------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|-----------|------------------|
-| RF-06  | Registro de Compras por Empresa       | Permitir registrar operaciones de compras para la empresa activa, respetando el contexto multitenant.                                           | Compras           | Media     | RF-01, RF-02     |
+| RF-06  | Asignación de permisos       | Permitir la asignación de permisos a usuarios desde la instancia central a cada uno de las empresas.                                           | Aplicación Base           | Alta     | RF-01, RF-04     |
 | RF-07  | Registro de Ventas por Empresa        | Registrar operaciones de ventas por empresa, aisladas de otras empresas.                                                                        | Ventas            | Media     | RF-01, RF-02     |
 | RF-08  | Reportes Filtrados por Empresa        | Generar reportes de compras, ventas, inventario, contabilidad, etc., filtrados por empresa.                                                     | Reportes          | Alta      | RF-06, RF-07     |
 | RF-09  | Gestión de Inventario por Empresa     | Manejar inventarios separados por empresa, con control individual de almacenes, productos y existencias.                                       | Inventario        | Alta      | RF-01, RF-02     |

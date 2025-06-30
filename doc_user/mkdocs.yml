@@ -1,6 +1,6 @@
 # Project information
 site_name: Sistema Multiempresa
-site_dir: ../../public/docs/user
+site_dir: ../public/docs/user
 use_directory_urls: true
 
 # Page tree
@@ -9,11 +9,11 @@ nav:
   - Requerimientos del sistema: requirements.md
   - Diagramas: diagrams.md
   - Casos de uso: cases.md
-  # - Propuesta técnica: technical_proposal.md
-  # - Limitaciones de multitenancy en Laravel: limitations.md
-  # - Intercambio de datos entre clientes (Tenants): data.md
-  # - Paquete Laravel multitenancy: laravel.md
-  # - Implementación de un sistema multitenancy: example.md
+  - Propuesta técnica: technical_proposal.md
+  - Limitaciones de multitenancy en Laravel: limitations.md
+  - Intercambio de datos entre clientes (Tenants): data.md
+  - Paquete Laravel multitenancy: laravel.md
+  - Implementación de un sistema multitenancy: example.md
 
 # Repository
 repo_name: Repositorio-Kavac
