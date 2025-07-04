@@ -17,4 +17,4 @@ A continuación, se describen los términos clave y siglas utilizadas en este do
 | **Multitenant** | Arquitectura de software que permite que una única instancia de la aplicación sirva a múltiples clientes (*tenants*) con aislamiento de datos. |
 | **Tenant**    | Cliente individual (empresa o sucursal) que opera dentro de una instancia multitenant del sistema. |
 | **KAVAC**     | Nombre del sistema ERP objeto del presente documento. |
-| **Módulo**    | Componente funcional del sistema ERP (ej. compras, ventas, inventario, contabilidad, etc.). |
+| **Módulo**    | Componente funcional del sistema ERP (ej. compras, ventas, almacén, contabilidad, etc.). |

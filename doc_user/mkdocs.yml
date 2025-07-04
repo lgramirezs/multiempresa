@@ -7,8 +7,10 @@ use_directory_urls: true
 nav:
   - Introducción: index.md
   - Requerimientos del sistema: requirements.md
-  - Diagramas: diagrams.md
-  - Casos de uso: cases.md
+  - Diagramas:
+      - Aplicación Base: modules/baseApplicationDiagram.md
+  - Casos de uso:
+      - Aplicación Base: baseapplicationusecases.md
   - Propuesta técnica: technical_proposal.md
   - Limitaciones de multitenancy en Laravel: limitations.md
   - Intercambio de datos entre clientes (Tenants): data.md
@@ -51,11 +53,11 @@ plugins:
   - search
   - minify:
       minify_html: true
-  - with-pdf:
-      author: CENDITEL
-      copyright: http://conocimientolibre.cenditel.gob.ve/licencia-de-software-v-1-3/
-      cover_subtitle: KAVAC - ERP para la gestión organizacional
-      output_path: 'user.pdf'
+  # - with-pdf:
+  #     author: CENDITEL
+  #     copyright: http://conocimientolibre.cenditel.gob.ve/licencia-de-software-v-1-3/
+  #     cover_subtitle: KAVAC - ERP para la gestión organizacional
+  #     output_path: 'user.pdf'
 
 # Extensions
 markdown_extensions:
