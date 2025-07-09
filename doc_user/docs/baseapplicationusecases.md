@@ -1,4 +1,4 @@
-## Gestión de Empresas
+## Gestión de empresas
 
 ??? success "Descripción del requerimiento"
     **Objetivo General**
@@ -122,7 +122,7 @@
     *   La información debe ser presentada de forma clara y organizada.
     *   La seguridad de los datos debe estar garantizada.
 
-## Aislamiento de Datos por Empresa
+## Aislamiento de datos por empresa
 
 ??? success "Descripción del requerimiento"
     **Objetivo General**
@@ -212,7 +212,7 @@
 
     -   Debe auditarse cada intento de visualización de datos con trazabilidad de usuario, fecha y empresa.
 
-## Consultar información de una sucursal
+## Consultar información de una empresa
 
 ??? success "Descripción del requerimiento"
     **Objetivo General**
@@ -354,3 +354,398 @@
     - La asignación debe ejecutarse de forma automática e inmediata tras la creación de la sucursal.
     - El sistema debe garantizar la consistencia de permisos para el administrador central.
     - Deben existir registros que permitan auditar cada asignación de permisos generada por el sistema.
+
+## Control de roles y permisos por empresa
+
+??? success "Descripción del requerimiento"
+    **Objetivo General**
+
+    Permitir la gestión independiente de roles y permisos para consultar información de cada empresa desde el sistema central, de forma que los administradores puedan controlar con precisión quién puede acceder a qué información, según la empresa.
+
+    **Funcionalidades clave**
+
+    1.  **Asignación de roles y permisos por empresa** 
+
+        -   **Descripción:** Permitir a los administradores del sistema central asignar roles y permisos de consulta específicos a usuarios, empresa por empresa.
+
+        -   **Detalles:**
+
+            -   Cada usuario puede tener permisos diferentes para distintas empresas.
+            -   El sistema debe permitir asignar roles predefinidos o personalizados a nivel de empresa.
+            -   Los permisos incluyen el acceso a módulos, siempre filtrados por la empresa autorizada.
+            -   Los permisos deben poder actualizarse o revocarse fácilmente.
+
+    2.  **Consulta controlada por permisos**
+
+        -   **Descripción:** Filtrar automáticamente la información que un usuario puede consultar en el sistema central, según los permisos asignados por empresa.
+
+        -   **Detalles:**
+
+            -   Cuando el usuario accede a una sección del sistema, solo verá la información de las empresas para las que tiene permisos.
+            -   Si intenta consultar información de una empresa no autorizada, el sistema debe bloquear el acceso y registrar el intento.
+            -   El sistema debe mantener esta restricción en todos los módulos relevantes.
+
+    **Requisitos No Funcionales**
+
+    -   **Seguridad:** El sistema debe garantizar que ningún usuario pueda acceder a datos de empresas no autorizadas.
+    
+    -   **Flexibilidad:** Los permisos deben ser configurables por empresa y por módulo.
+    
+    -   **Trazabilidad:** Toda asignación, modificación o intento de acceso indebido debe registrarse para auditoría.
+    
+    -   **Usabilidad:** La interfaz de asignación de roles y permisos debe ser clara, intuitiva y eficiente para el administrador.
+
+??? info "Caso de uso del requerimiento"
+    **Actor:** Administrador central
+
+    **Precondiciones:**
+    
+    - El administrador ha iniciado sesión con credenciales válidas.
+    
+    - Existen usuarios registrados y empresas activas en el sistema.
+
+    **Postcondiciones:**
+
+    - Los usuarios tienen asignados permisos específicos para consultar información de una o más empresas.
+
+    - El sistema restringe automáticamente la visibilidad de la información a lo autorizado.
+
+    **Flujo principal:**
+
+    1. El administrador accede al módulo de gestión de usuarios y permisos.
+    
+    2. Selecciona un usuario del sistema.
+    
+    3. El sistema muestra un listado de empresas registradas.
+    
+    4. Para cada empresa, el administrador selecciona los módulos que el usuario puede consultar.
+    
+    5. El administrador guarda los cambios.
+    
+    6. El sistema confirma que los permisos han sido asignados correctamente y registra la acción.
+
+    **Flujos alternativos:**
+
+    - **Asignación parcial:** El administrador asigna permisos solo para algunas empresas, y el sistema filtra automáticamente la información del usuario en los módulos.
+
+    - **Edición de permisos:** El administrador modifica los permisos existentes para un usuario, y el sistema actualiza las restricciones en tiempo real.
+
+    **Excepciones:*
+
+    - **Error al guardar los permisos:** Si ocurre un fallo en la base de datos al guardar los permisos, el sistema muestra un mensaje de error y solicita reintento.
+
+    - **Usuario o empresa inexistente:** Si el usuario o empresa ha sido eliminado durante la operación, el sistema cancela la asignación e informa al administrador.
+
+    **Requisitos no funcionales:**
+
+    - La gestión debe permitir asignaciones masivas o individuales.
+
+    - Los cambios deben tener efecto inmediato en la sesión del usuario afectado.
+
+    - Toda acción debe quedar registrada con información de usuario, empresa, fecha y tipo de permiso asignado.
+
+
+## Configuración de módulos para multiempresa
+
+??? success "Descripción del requerimiento"
+    **Objetivo General**
+
+    Integrar en la sección de instalación de módulos una funcionalidad que permita configurar, desde el sistema central, cómo interactuarán los módulos instalados con las distintas empresas del entorno multiempresa. Esto incluye establecer qué funcionalidades estarán disponibles por empresa, cómo se conectan con el sistema central, y qué datos serán accesibles o sincronizados.
+
+    **Funcionalidades clave**
+
+    1.  **Configuración de comportamiento del módulo desde el sistema central**
+
+        -   **Descripción:** Permitir al administrador central definir, al instalar un módulo, las reglas de integración con otras empresas del sistema.
+
+        -   **Detalles:**
+                
+            - Selección de empresas en las que se instalará y habilitará el módulo.
+            
+            - Definición de parámetros de comportamiento por empresa:
+            
+                - Nivel de visibilidad de los datos de la empresa desde el sistema central.
+            
+                - Frecuencia de sincronización (en tiempo real, diaria, manual).
+            
+                - Acciones que puede ejecutar el sistema central sobre los datos de la empresa (lectura, auditoría, validación, etc.).
+            
+            - Opción de aplicar configuraciones por defecto o personalizadas por empresa.
+
+    2.  **Administración posterior a la instalación**
+
+        -   **Descripción:** Permitir al sistema central modificar la configuración del módulo por empresa en cualquier momento posterior a la instalación.          
+
+        -   **Detalles:**
+
+            - Desde la administración de módulos, se podrá editar el comportamiento del módulo por empresa.
+
+            - Las modificaciones pueden incluir activación/desactivación, ajustes de sincronización, acceso a información sensible o agregada.
+
+            - Todos los cambios deben registrarse para auditoría.
+
+    **Requisitos No Funcionales**
+
+    - **Modularidad:** Cada módulo debe estar preparado para configurarse por empresa desde el sistema central.
+    
+    - **Seguridad:** La configuración debe restringir que solo el sistema central defina reglas inter-empresa.
+    
+    - **Trazabilidad:** Cada cambio de configuración debe quedar registrado con usuario, empresa afectada, fecha y parámetros aplicados.
+    
+    - **Escalabilidad:** Debe funcionar eficientemente con un número creciente de empresas.
+    
+    - **Usabilidad:** La interfaz debe permitir gestionar reglas complejas de forma clara y centralizada.
+
+??? info "Caso de uso del requerimiento"
+    **Actor:** Administrador central
+
+    **Precondiciones:**
+
+    - El administrador ha iniciado sesión con credenciales válidas.
+    
+    - Existen múltiples empresas registradas en el entorno multiempresa.
+    
+    - El módulo a instalar está disponible en el repositorio.
+
+    **Postcondiciones:**
+
+    - El módulo queda instalado y configurado según las necesidades del sistema central respecto a cada empresa seleccionada.
+    
+    - Las empresas involucradas reciben la configuración correspondiente.
+
+    **Flujo principal:**
+
+    1. El administrador accede a la sección “Instalación de Módulos”.
+    2. Selecciona un módulo disponible para instalación.
+    3. El sistema presenta una interfaz para configurar el módulo por empresa.
+    4. El administrador selecciona:
+        - Las empresas donde se instalará el módulo.
+        - Las reglas de interacción del sistema central con cada empresa (acceso a datos, frecuencia de actualización, funcionalidades habilitadas).
+    5. El administrador guarda la configuración y confirma la instalación.
+    6. El sistema instala el módulo y aplica la configuración por empresa.
+    7. Se registra la instalación y configuración en el log de auditoría.
+
+    **Flujos alternativos:**
+
+    - **Aplicar configuración por defecto:** El administrador opta por aplicar reglas estándar (ej. visibilidad total, sincronización diaria).
+    
+    - **Empresa no compatible:** Si una empresa no cumple con los requisitos técnicos del módulo, el sistema muestra un mensaje de advertencia y excluye a esa empresa de la instalación.
+
+    **Excepciones:**
+
+    - **Error de instalación en una empresa:** Si falla la instalación en una o más empresas, el sistema muestra un resumen con los errores, instala el módulo donde fue posible y registra los fallos.
+
+    - **Parámetros inválidos:** Si se configuran reglas contradictorias o incompletas, el sistema bloquea la instalación y solicita correcciones.
+
+    **Requisitos no funcionales:**
+
+    - Los módulos deben tener soporte para configuración multiempresa.
+
+    - La instalación debe validar que cada empresa cumpla con las dependencias del módulo.
+
+    - Toda acción debe ser auditable.
+
+
+## Auditoría por empresa
+
+??? success "Descripción del requerimiento"
+    **Objetivo General**
+
+    Implementar un sistema de registro (logging) que documente todas las acciones del sistema que impliquen el intercambio de datos entre empresas, identificando el usuario que realizó la acción, la acción ejecutada y las empresas involucradas, con el fin de garantizar trazabilidad, transparencia y auditoría en un entorno multiempresa.
+
+    **Funcionalidades clave**
+
+    1. **Registro de logs para operaciones inter-empresa**
+
+        -   **Descripción:** Capturar automáticamente información detallada de todas las acciones que impliquen transferencia, consulta o sincronización de datos entre empresas.
+
+        **Detalles:**
+
+        - El sistema debe registrar:
+            - Usuario que realizó la acción
+            - Fecha y hora
+            - Tipo de acción (ej: consultar, sincronizar, exportar)
+            - Empresa de origen
+            - Empresa de destino (si aplica)
+        - Las acciones registradas deben limitarse únicamente a aquellas que involucren datos compartidos entre diferentes empresas.
+        - El registro debe realizarse de forma transparente al usuario.
+
+    2. **Consola de revisión de logs (solo para administradores)**
+        
+        -   **Descripción:** Permitir a los administradores del sistema acceder a un historial de acciones inter-empresa para auditoría.
+
+        -   **Detalles:**
+
+            - Acceso solo para usuarios con permisos de auditoría.
+            
+            - Filtrado por usuario, empresa, rango de fechas y tipo de acción.
+            
+            - Exportación del log en formatos como CSV o PDF.
+
+    **Detalles:**
+        
+    - Acceso solo para usuarios con permisos de auditoría.
+    
+    - Filtrado por usuario, empresa, rango de fechas y tipo de acción.
+    
+    - Exportación del log en formatos como CSV o PDF.
+
+??? info "Caso de uso del requerimiento"
+    **Actor:** Administrador central
+
+    **Precondiciones:**
+    
+    - El usuario está autenticado en el sistema.
+    
+    - La acción realizada implica el acceso, transferencia o visualización de información perteneciente a otra empresa.
+
+    **Postcondiciones:**
+
+    - Se genera un registro en el log con todos los datos relevantes de la acción inter-empresa.
+
+    - El registro queda disponible para revisión por parte del administrador con permisos de auditoría.
+
+    **Flujo principal:**
+
+    1. El usuario realiza una acción que implica acceso a información de otra empresa (ej: sincronizar datos, exportar reportes cruzados).
+    2. El sistema identifica que la acción corresponde a un contexto inter-empresa.
+    3. El sistema registra automáticamente:
+        - ID del usuario
+        - Acción ejecutada
+        - Fecha y hora
+        - Empresa de origen del usuario
+        - Empresa cuyos datos fueron accedidos
+    4. El registro se almacena de forma segura en el módulo de auditoría.
+
+    **Flujos alternativos:**
+
+    - **Acción intraempresa:** Si el usuario realiza una acción dentro del contexto de su propia empresa, el sistema no registra el 
+    evento como log inter-empresa.
+    
+    - **Acción no relevante:** Si la acción no afecta datos (como navegación o configuración personal), no se genera log.
+
+    **Excepciones:**
+
+    - **Error en el módulo de logging:** Si el sistema no puede registrar la acción, genera un log de error del sistema y notifica al administrador.
+
+    - **Fallo en la identificación de empresas:** Si no se puede determinar la empresa de destino, el sistema bloquea la acción hasta que se resuelva el conflicto de identificación.
+
+    **Requisitos no funcionales:**
+
+    - Los registros deben almacenarse en una base de datos segura y ser inmutables.
+
+    - Los logs deben estar disponibles por al menos 12 meses para revisión.
+
+    - El acceso a los logs debe ser trazado y limitado a roles autorizados.
+
+
+## Creación de usuario administrador
+
+??? success "Descripción del requerimiento"
+    **Objetivo General**
+    
+    Garantizar que toda empresa registrada en el sistema cuente inmediatamente con un usuario administrador, creado automáticamente con privilegios iniciales, para que pueda gestionar su entorno sin requerir intervención manual del sistema central.
+
+    **Funcionalidades clave**
+
+    1. Creación automática del administrador de empresa
+    
+        -   **Descripción:** Al registrar una nueva empresa, el sistema debe generar automáticamente un usuario administrador asociado a dicha empresa.
+
+        -   **Detalles:**
+
+            - El usuario debe tener:
+            
+              - Rol: Administrador de empresa
+            
+              - Acceso completo a los módulos habilitados para su empresa
+            
+              - Permisos para gestionar usuarios, configuración de módulos y parámetros internos
+            
+            - El sistema debe permitir definir:
+            
+              - Nombre de usuario sugerido (ej: admin_<nombre_empresa>)
+            
+              - Contraseña temporal (a ser cambiada en el primer inicio de sesión)
+            
+              - Correo de contacto (si se suministra al momento de la creación)
+
+    2. Configuración inicial del entorno de empresa
+
+        -   **Descripción:** Junto con la creación del usuario, el sistema debe habilitar los accesos mínimos necesarios para comenzar a operar.
+
+        -   **Detalles:**
+            
+            - El sistema puede asociar al nuevo administrador a un conjunto de configuraciones predeterminadas (perfiles, plantillas, dashboards).
+            
+            - Debe establecerse un mecanismo para forzar el cambio de contraseña en el primer inicio.
+    
+    **Requisitos No Funcionales**
+    
+    - **Seguridad:** La contraseña inicial debe ser fuerte, única por empresa y forzar renovación.
+    
+    - **Automatización:** El proceso debe ejecutarse sin intervención humana.
+    
+    - **Trazabilidad:** La creación del usuario debe quedar registrada en los logs del sistema.
+    
+    - **Usabilidad:** El usuario debe recibir instrucciones claras al iniciar sesión por primera vez.
+
+??? info "Caso de uso del requerimiento"
+    **Actor:** Usuario con permisos para registrar empresas (administrador central)  
+    **Sistema:** Proceso automático de creación de usuario
+
+    **Precondiciones:**
+
+    - El usuario ha iniciado sesión con credenciales válidas.
+    
+    - El usuario tiene permiso para crear nuevas empresas.
+    
+    - El formulario de registro de empresa ha sido completado correctamente.
+
+    **Postcondiciones:**
+
+    - La nueva empresa ha sido registrada.
+
+    - Se ha creado automáticamente un usuario con rol de administrador asociado a esa empresa.
+
+    - El nuevo usuario puede iniciar sesión y gestionar su entorno.
+
+    **Flujo principal:**
+
+    1. El usuario accede al módulo "Gestión de Empresas" y selecciona "Crear nueva empresa".
+
+    2. Completa el formulario con los datos requeridos.
+
+    3. Al guardar, el sistema registra la empresa en la base de datos.
+
+    4. Inmediatamente después, el sistema:
+
+        - Genera un usuario administrador para la empresa recién creada.
+
+        - Asocia el usuario al rol “Administrador de Empresa”.
+
+        - Define una contraseña temporal segura.
+
+        - Registra el evento en los logs.
+
+    5. El sistema muestra un mensaje de confirmación con los datos del nuevo usuario o los envía por correo.
+
+    **Flujos alternativos:**
+    
+    - **Correo no suministrado:** Si no se proporciona un correo electrónico, el sistema asigna un nombre de usuario genérico y solicita al administrador central compartir las credenciales manualmente.
+    
+    - **Empresa con nombre duplicado:** El sistema bloquea la creación y solicita modificar el nombre antes de continuar.
+
+    **Excepciones:**
+    
+    - **Error en la base de datos:** Si falla la creación del usuario o de la empresa, el sistema revierte ambas acciones y muestra un mensaje de error.
+    
+    - **Error de configuración predeterminada:** Si faltan parámetros del rol predeterminado, el sistema alerta al administrador para intervención manual.
+
+    **Requisitos no funcionales:**
+
+    - El proceso debe ejecutarse automáticamente e inmediatamente después del registro de la empresa.
+
+    - Toda acción debe quedar registrada con marca de tiempo y usuario que originó la creación.
+
+    - La interfaz debe mostrar claramente el éxito de la operación y los datos del usuario creado.

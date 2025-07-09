@@ -152,35 +152,90 @@ Accede al sistema con el dominio de cada tenant deseado.
         	$tenant1->domains()->create(['domain' => 'foo.localhost']);
         })
 
-## Repositorio
+## Como acceder a un tenant desde la app central 
+
+El método **tenancy()->initialize($tenant)** es fundamental para activar el contexto multi-inquilino (multi-tenant) en una aplicación. 
+
+!!! question "¿Qué hace tenancy()->initialize($tenant)?"
+    Este método inicializa el contexto del inquilino en la aplicación. Esto significa que:
+
+    1. Activa los recursos, configuraciones y servicios específicos del inquilino.
+
+    2. Cambia el contexto de ejecución desde el entorno global al del inquilino.
+
+    3. Lanza una serie de eventos (TenancyInitialized, etc.) que permiten configurar dinámicamente cosas como:
+
+        - Conexión a base de datos del inquilino
+
+        - Configuraciones personalizadas (como rutas, archivos, cache, etc.)
+
+        - Cargas condicionales de servicios
+
+**Características Técnicas**
+
+| Característica          | Descripción                                                                 |
+|-------------------------|-----------------------------------------------------------------------------|
+| **Aislamiento**         | Cambia conexiones y configuraciones al contexto del inquilino               |
+| **Personalización**     | Usa settings únicos por tenant (DB, rutas, archivos, etc.)                 |
+| **Eventos**             | Dispara eventos como `TenancyInitialized`, `TenancyInitializing`           |
+| **Reversibilidad**      | Se puede volver al contexto global con `tenancy()->end()`                   |
+| **Flexible**            | Funciona con distintos tipos de tenant (subdominio, ruta, etc.)             |
+| **Útil en scripts**     | Permite correr comandos Artisan o procesos manuales por tenant              |
+
+**Ejemplo de uso** 
+
+        use App\Models\Tenant;
+        use Tenancy\Facades\Tenancy;
+
+        $tenant = Tenant::find(1);
+
+        tenancy()->initialize($tenant);
+
+        // A partir de aquí, todo lo que hagas será dentro del tenant
+        User::create(['name' => 'Juan']); // Se guardará en la DB del tenant
+
+        tenancy()->end(); // Vuelves al contexto global
 
 
+**Casos de uso típicos**
 
-## Como accerder a un tenant desde la app central 
+-   Ejecutar migraciones o seeders dentro del contexto de un tenant específico.
 
-// Consulto el tenant al cual quiero acceder
-$tenant = Tenant::first()
+-   Procesar tareas en cola (jobs) con lógica aislada por tenant.
 
-// Le indico a laravel a través del helper que quiero acceder a ese tenant
-tenancy()->initialize($tenant);
+-   Crear una interfaz administrativa global donde un super admin pueda "entrar" al tenant.
 
-Ejemplo: 
+-   Desarrollar un comando Artisan para mantenimiento/operaciones por tenant.
 
-La consulta $user = \App\Models\User::first() ahora devolverá el usuario del tenant al que accedí.
+**Consideraciones**
 
-Si queremos finalizar la conexión lo podemos hacer de la siguiente manera:
+-   **No es idempotente:** Llamarlo varias veces no "reinicia" el contexto; debes llamar tenancy()->end() antes de volver a inicializar otro tenant.
 
-tenancy()->end();
-// Finalizo la conexión al tenant
-// Ahora las consultas volverán a ser sobre el tenant central
+-   **Debe usarse antes de ejecutar lógica tenant-aware** (como acceso a modelos).
+
+-   **Eventos personalizados** pueden ayudarte a extender su comportamiento (ej. configurar dinámicamente servicios de terceros).
 
 
-Viceversa
-// Acceder desde un tenant a la app central
+**Recomendaciones**
 
-// Lo hago a través de una function anonima 
+-   Usa tenancy()->initialize() solo cuando estás fuera de un request HTTP (por ejemplo, en comandos o procesos manuales). Para peticiones normales, el middleware InitializeTenancyBy... se encarga automáticamente.
 
-tenancy()->central(function () {
-    // Aquí dentro las consultas serán sobre el tenant central
-    $user = \App\Models\User::first();
-});
+-   Si haces pruebas (tests), asegúrate de llamar tenancy()->end() para limpiar entre tests.
+
+-   Escucha los eventos como TenancyInitialized para agregar lógica condicional, por ejemplo:
+
+        Event::listen(TenancyInitialized::class, function ($event) {
+            config(['app.name' => $event->tenant->name]);
+        });
+
+Para realizar un acción desde cualquier tenant al tenant central 
+
+        // A través de una function anonima 
+
+        tenancy()->central(function () {
+            // Aquí dentro las consultas serán sobre el tenant central
+            $user = \App\Models\User::first();
+        });
+
+        //Finaliza la conexión 
+        tenancy()->end();

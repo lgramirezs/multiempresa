@@ -15,7 +15,8 @@ nav:
   - Limitaciones de multitenancy en Laravel: limitations.md
   - Intercambio de datos entre clientes (Tenants): data.md
   - Paquete Laravel multitenancy: laravel.md
-  - Implementación de un sistema multitenancy: example.md
+  - Implementación de un sistema multitenancy simple: example.md
+  - Aplicación multitenancy: demo.md
 
 # Repository
 repo_name: Repositorio-Kavac
@@ -53,11 +54,6 @@ plugins:
   - search
   - minify:
       minify_html: true
-  # - with-pdf:
-  #     author: CENDITEL
-  #     copyright: http://conocimientolibre.cenditel.gob.ve/licencia-de-software-v-1-3/
-  #     cover_subtitle: KAVAC - ERP para la gestión organizacional
-  #     output_path: 'user.pdf'
 
 # Extensions
 markdown_extensions:
